@@ -1,7 +1,7 @@
 package io.github.sinri.keel.logger.issue.recorder;
 
-import io.github.sinri.keel.logger.event.KeelEventLog;
 import io.github.sinri.keel.logger.issue.center.KeelIssueRecordCenter;
+import io.github.sinri.keel.logger.issue.record.KeelEventLog;
 import io.github.sinri.keel.logger.issue.record.KeelIssueRecord;
 
 import javax.annotation.Nonnull;
