@@ -1,6 +1,5 @@
 package io.github.sinri.keel.logger.issue.log4j2;
 
-import io.github.sinri.keel.core.TechnicalPreview;
 import io.github.sinri.keel.logger.KeelLogLevel;
 import io.github.sinri.keel.logger.event.KeelEventLog;
 import io.github.sinri.keel.logger.issue.recorder.adapter.KeelIssueRecorderAdapter;
@@ -15,9 +14,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import static io.github.sinri.keel.facade.KeelInstance.Keel;
+// import static io.github.sinri.keel.facade.KeelInstance.Keel;
 
-@TechnicalPreview(since = "4.1.3")
 public final class KeelLog4j2LoggerContext implements LoggerContext {
     private final Map<String, KeelLog4j2Logger> loggerMap;
     @Nonnull
@@ -53,7 +51,8 @@ public final class KeelLog4j2LoggerContext implements LoggerContext {
                 if (existed == null) {
                     var logger = new KeelLog4j2Logger(this.adapterSupplier, visibleBaseLevel, name, issueRecordInitializer);
                     loggerMap.put(name, logger);
-                    Keel.getLogger().notice("Keel Logging for log4j built logger for [" + name + "]");
+                    // Keel.getLogger().notice("Keel Logging for log4j built logger for [" + name + "]");
+                    System.out.println("Keel Logging for log4j built logger for [" + name + "]");
                     return logger;
                 } else {
                     return existed;

@@ -1,6 +1,7 @@
 package io.github.sinri.keel.logger.metric;
 
 import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -10,14 +11,16 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static io.github.sinri.keel.facade.KeelInstance.Keel;
 
-/**
- * @since 3.1.9 Technical Preview
- */
 abstract public class KeelMetricRecorder implements Closeable {
     private final AtomicBoolean endSwitch = new AtomicBoolean(false);
     private final Queue<KeelMetricRecord> metricRecordQueue = new ConcurrentLinkedQueue<>();
+
+    private final Vertx vertx;
+
+    public KeelMetricRecorder(Vertx vertx) {
+        this.vertx = vertx;
+    }
 
     public void recordMetric(KeelMetricRecord metricRecord) {
         this.metricRecordQueue.add(metricRecord);
@@ -37,47 +40,29 @@ abstract public class KeelMetricRecorder implements Closeable {
     }
 
     public void start() {
-        Keel.asyncCallRepeatedly(routineResult -> Future.succeededFuture()
-                                                        .compose(v -> {
-                                                            List<KeelMetricRecord> buffer = new ArrayList<>();
+        Future.succeededFuture()
+              .compose(v -> {
+                  List<KeelMetricRecord> buffer = new ArrayList<>();
 
-                                                            while (true) {
-                                                                KeelMetricRecord metricRecord = metricRecordQueue.poll();
-                                                                if (metricRecord == null) break;
+                  while (true) {
+                      KeelMetricRecord metricRecord = metricRecordQueue.poll();
+                      if (metricRecord == null) break;
 
-                                                                buffer.add(metricRecord);
-                                                                if (buffer.size() >= bufferSize()) break;
-                                                            }
+                      buffer.add(metricRecord);
+                      if (buffer.size() >= bufferSize()) break;
+                  }
 
-                                                            if (buffer.isEmpty()) {
-                                                                if (endSwitch.get()) {
-                                                                    routineResult.stop();
-                                                                    return Future.succeededFuture();
-                                                                }
-                                                                return Keel.asyncSleep(1000L);
-                                                            } else {
-                                                                // since 4.0.0 no various topics supported.
-                                                                //                            Map<String, List<KeelMetricRecord>> map = groupByTopic(buffer);
-                                                                //                            return Keel.asyncCallIteratively(map.keySet(), topic -> {
-                                                                //                                return handleForTopic(topic, map.get(topic));
-                                                                //                            });
+                  if (!buffer.isEmpty()) {
+                      return handleForTopic(topic(), buffer);
+                  }
 
-                                                                return handleForTopic(topic(), buffer);
-                                                            }
-                                                        }));
-    }
-
-    /**
-     * Marks the end of the metric recording process and closes any associated resources.
-     * This method is deprecated and should not be used in newer implementations. Use
-     * the {@link #close()} method instead to properly terminate the metric recorder.
-     *
-     * @throws IOException if an I/O error occurs during resource closure
-     * @deprecated since version 4.1.3, use {@link #close()} instead
-     */
-    @Deprecated(since = "4.1.3", forRemoval = true)
-    public final void end() throws IOException {
-        close();
+                  return Future.succeededFuture();
+              })
+              .andThen(ar -> {
+                  if (!endSwitch.get()) {
+                      vertx.setTimer(1000L, id -> start());
+                  }
+              });
     }
 
     /**

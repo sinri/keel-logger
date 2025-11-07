@@ -1,6 +1,5 @@
 package io.github.sinri.keel.logger.issue.log4j2;
 
-import io.github.sinri.keel.core.TechnicalPreview;
 import io.github.sinri.keel.logger.KeelLogLevel;
 import io.github.sinri.keel.logger.event.KeelEventLog;
 import io.github.sinri.keel.logger.issue.recorder.adapter.KeelIssueRecorderAdapter;
@@ -13,7 +12,6 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.function.Supplier;
 
-@TechnicalPreview(since = "4.1.3")
 public final class KeelLog4j2LoggerContextFactory implements LoggerContextFactory {
 
     private final KeelLog4j2LoggerContext loggerContext;

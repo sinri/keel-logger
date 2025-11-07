@@ -1,8 +1,7 @@
 package io.github.sinri.keel.logger.issue.record;
 
-import io.github.sinri.keel.core.SelfInterface;
-import io.github.sinri.keel.core.json.UnmodifiableJsonifiableEntity;
 import io.github.sinri.keel.logger.KeelLogLevel;
+import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,7 +13,7 @@ import java.util.List;
  * @since 3.2.0
  * @since 4.0.0 package protected
  */
-interface KeelIssueRecordCore<T> extends SelfInterface<T> {
+interface KeelIssueRecordCore<T> {
     String AttributeClassification = "classification";
     String AttributeLevel = "level";
     String AttributeException = "exception";
@@ -23,8 +22,11 @@ interface KeelIssueRecordCore<T> extends SelfInterface<T> {
 
     long timestamp();
 
+    //    @Nonnull
+    //    UnmodifiableJsonifiableEntity attributes();
+
     @Nonnull
-    UnmodifiableJsonifiableEntity attributes();
+    JsonObject attributes();
 
     T exception(@Nonnull Throwable throwable);
 
@@ -46,4 +48,10 @@ interface KeelIssueRecordCore<T> extends SelfInterface<T> {
 
     @Nonnull
     KeelLogLevel level();
+
+    @SuppressWarnings("unchecked")
+    @Nonnull
+    default T getImplementation() {
+        return (T) this;
+    }
 }

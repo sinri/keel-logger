@@ -1,7 +1,7 @@
 package io.github.sinri.keel.logger.issue.slf4j;
 
-import io.github.sinri.keel.core.TechnicalPreview;
 import io.github.sinri.keel.logger.event.KeelEventLog;
+import io.github.sinri.keel.logger.issue.center.KeelIssueRecordCenter;
 import io.github.sinri.keel.logger.issue.recorder.adapter.KeelIssueRecorderAdapter;
 import io.vertx.core.Handler;
 import org.slf4j.IMarkerFactory;
@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-import static io.github.sinri.keel.facade.KeelInstance.Keel;
 
 /**
  * Keel 日志系统的 SLF4J 服务提供者抽象基类。
@@ -49,7 +48,6 @@ import static io.github.sinri.keel.facade.KeelInstance.Keel;
  * @see KeelIssueRecorderAdapter
  * @since 4.1.1
  */
-@TechnicalPreview(since = "4.1.1")
 public class KeelSLF4JServiceProvider implements SLF4JServiceProvider {
     /**
      * Keel 日志记录器工厂实例。
@@ -143,7 +141,7 @@ public class KeelSLF4JServiceProvider implements SLF4JServiceProvider {
      */
     @Nonnull
     protected Supplier<KeelIssueRecorderAdapter> getAdapterSupplier() {
-        return () -> Keel.getLogger().issueRecordCenter().getAdapter();
+        return () -> KeelIssueRecordCenter.outputCenter().getAdapter();
     }
 
     @Nullable

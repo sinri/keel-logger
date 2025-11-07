@@ -1,6 +1,5 @@
 package io.github.sinri.keel.logger.issue.log4j2;
 
-import io.github.sinri.keel.core.TechnicalPreview;
 import io.github.sinri.keel.logger.KeelLogLevel;
 import io.github.sinri.keel.logger.event.KeelEventLog;
 import io.github.sinri.keel.logger.issue.center.KeelIssueRecordCenter;
@@ -13,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-@TechnicalPreview(since = "4.1.3")
 public class KeelLog4j2Provider extends Provider {
     public static final int DEFAULT_PRIORITY = 50;
     public static final String DEFAULT_VERSIONS = "2.x";

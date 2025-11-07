@@ -1,4 +1,9 @@
 package io.github.sinri.keel.logger;
 
-public interface SelfInterface {
+@Deprecated
+public interface SelfInterface<T extends SelfInterface<T>> {
+    @SuppressWarnings("unchecked")
+    default T self() {
+        return (T) this;
+    }
 }

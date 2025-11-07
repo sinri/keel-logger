@@ -1,6 +1,5 @@
 package io.github.sinri.keel.logger.issue.record;
 
-import io.github.sinri.keel.core.json.UnmodifiableJsonifiableEntity;
 import io.github.sinri.keel.logger.KeelLogLevel;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
@@ -10,13 +9,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * As of 4.0.0 let it be an abstract class.
- * As of 4.1.0 add {@link KeelIssueRecord#getThreadInfo()}.
- *
- * @param <T> the final implementation type.
- * @since 3.1.10
- */
 public abstract class KeelIssueRecord<T> implements IssueRecordMessageMixin<T>, IssueRecordContextMixin<T> {
     private final @Nonnull JsonObject attributes;
     private final @Nonnull List<String> classification;
@@ -39,7 +31,7 @@ public abstract class KeelIssueRecord<T> implements IssueRecordMessageMixin<T>, 
      * @since 4.0.0 for KeelEventLog
      */
     protected KeelIssueRecord(@Nonnull KeelIssueRecord<?> baseIssueRecord) {
-        this.attributes = baseIssueRecord.attributes().cloneAsJsonObject();
+        this.attributes = baseIssueRecord.attributes();
         this.classification = baseIssueRecord.classification();
         this.timestamp = baseIssueRecord.timestamp();
         this.level = baseIssueRecord.level();
@@ -96,8 +88,8 @@ public abstract class KeelIssueRecord<T> implements IssueRecordMessageMixin<T>, 
 
     @Nonnull
     @Override
-    final public UnmodifiableJsonifiableEntity attributes() {
-        return UnmodifiableJsonifiableEntity.wrap(attributes);
+    public JsonObject attributes() {
+        return attributes;
     }
 
     @Override

@@ -1,11 +1,13 @@
 package io.github.sinri.keel.logger.issue.recorder.render;
 
-import io.github.sinri.keel.core.helper.KeelRuntimeHelper;
 import io.github.sinri.keel.logger.issue.record.KeelIssueRecord;
 import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.Set;
+
+import static io.github.sinri.keel.core.json.JsonifiedThrowable.IgnorableStackPackageSet;
 
 /**
  * @since 3.1.10
@@ -28,6 +30,6 @@ public interface KeelIssueRecordRender<R> {
 
     @Nonnull
     default Set<String> ignorableStackPackageSet() {
-        return KeelRuntimeHelper.ignorableCallStackPackage;
+        return IgnorableStackPackageSet;
     }
 }

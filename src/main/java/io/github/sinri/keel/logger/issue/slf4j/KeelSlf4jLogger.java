@@ -1,6 +1,5 @@
 package io.github.sinri.keel.logger.issue.slf4j;
 
-import io.github.sinri.keel.core.TechnicalPreview;
 import io.github.sinri.keel.logger.KeelLogLevel;
 import io.github.sinri.keel.logger.event.KeelEventLog;
 import io.github.sinri.keel.logger.issue.recorder.adapter.KeelIssueRecorderAdapter;
@@ -20,7 +19,6 @@ import java.util.function.Supplier;
  *
  * @since 4.1.1
  */
-@TechnicalPreview(since = "4.1.1")
 public final class KeelSlf4jLogger implements Logger {
     /**
      * Supplier for obtaining the issue recorder adapter used to handle log events.

@@ -1,8 +1,5 @@
 package io.github.sinri.keel.logger.issue.slf4j;
 
-import io.github.sinri.keel.core.TechnicalPreview;
-import io.github.sinri.keel.core.cache.KeelEverlastingCacheInterface;
-import io.github.sinri.keel.core.cache.NotCached;
 import io.github.sinri.keel.logger.KeelLogLevel;
 import io.github.sinri.keel.logger.event.KeelEventLog;
 import io.github.sinri.keel.logger.issue.recorder.adapter.KeelIssueRecorderAdapter;
@@ -12,9 +9,10 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import static io.github.sinri.keel.facade.KeelInstance.Keel;
 
 /**
  * A factory implementation for creating SLF4J Logger instances that integrate with the Keel logging framework.
@@ -43,7 +41,6 @@ import static io.github.sinri.keel.facade.KeelInstance.Keel;
  * @see ILoggerFactory
  * @since 4.1.1
  */
-@TechnicalPreview(since = "4.1.1")
 public final class KeelLoggerFactory implements ILoggerFactory {
 
     /**
@@ -65,7 +62,7 @@ public final class KeelLoggerFactory implements ILoggerFactory {
      * which is a requirement of the SLF4J specification. The cache uses an everlasting
      * strategy, meaning logger instances are retained for the lifetime of the factory.
      */
-    private final KeelEverlastingCacheInterface<String, Logger> loggerCache = KeelEverlastingCacheInterface.createDefaultInstance();
+    private final Map<String, Logger> loggerCache = new ConcurrentHashMap<>();
 
     /**
      * Constructs a new KeelLoggerFactory with the specified adapter supplier.
@@ -106,13 +103,14 @@ public final class KeelLoggerFactory implements ILoggerFactory {
      */
     @Override
     public Logger getLogger(String name) {
-        try {
-            return loggerCache.read(name);
-        } catch (NotCached e) {
+        if(loggerCache.containsKey(name)){
+            return loggerCache.get(name);
+        }else{
             synchronized (adapterSupplier) {
                 var logger = new KeelSlf4jLogger(adapterSupplier, KeelLogLevel.INFO, name, issueRecordInitializer);
-                Keel.getLogger().notice("Keel Logging for slf4j built logger for [" + name + "]");
-                loggerCache.save(name, logger);
+                //Keel.getLogger().notice("Keel Logging for slf4j built logger for [" + name + "]");
+                System.out.println("Keel Logging for slf4j built logger for [" + name + "]");
+                loggerCache.put(name, logger);
                 return logger;
             }
         }
