@@ -4,25 +4,20 @@ import io.github.sinri.keel.logger.api.LogLevel;
 import io.github.sinri.keel.logger.api.adapter.Adapter;
 import io.github.sinri.keel.logger.api.adapter.StdoutStringWriter;
 import io.github.sinri.keel.logger.api.issue.IssueRecord;
-import io.github.sinri.keel.logger.api.issue.IssueRecorder;
+import io.github.sinri.keel.logger.impl.issue.AbstractIssueRecorder;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class PlainIssueRecorder<T extends IssueRecord<T>> implements IssueRecorder<T, String> {
-    @Nonnull
-    private final String topic;
+public class PlainIssueRecorder<T extends IssueRecord<T>> extends AbstractIssueRecorder<T, String> {
     @Nonnull
     private final Supplier<T> issueRecordSupplier;
     @Nonnull
     private final Adapter<T, String> adapter;
-    @Nonnull
-    private LogLevel visibleLevel;
 
     public PlainIssueRecorder(@Nonnull String topic, @Nonnull Supplier<T> issueRecordSupplier, @Nonnull LogLevel visibleLevel) {
-        this.topic = topic;
+        super(topic);
         this.issueRecordSupplier = issueRecordSupplier;
-        this.visibleLevel = visibleLevel;
 
         PlainIssueRecordRender<T> render = new PlainIssueRecordRender<>();
         this.adapter = Adapter.build(render, StdoutStringWriter.getInstance());
@@ -40,23 +35,4 @@ public class PlainIssueRecorder<T extends IssueRecord<T>> implements IssueRecord
         return adapter;
     }
 
-
-    @Nonnull
-    @Override
-    public final LogLevel visibleLevel() {
-        return visibleLevel;
-    }
-
-    @Nonnull
-    @Override
-    public final IssueRecorder<T, String> visibleLevel(@Nonnull LogLevel level) {
-        this.visibleLevel = level;
-        return this;
-    }
-
-    @Nonnull
-    @Override
-    public final String topic() {
-        return topic;
-    }
 }
