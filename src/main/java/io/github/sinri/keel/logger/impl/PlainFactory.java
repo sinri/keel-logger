@@ -1,18 +1,23 @@
 package io.github.sinri.keel.logger.impl;
 
-import io.github.sinri.keel.logger.api.GenericLoggerFactory;
 import io.github.sinri.keel.logger.api.LogLevel;
+import io.github.sinri.keel.logger.api.RecorderFactory;
+import io.github.sinri.keel.logger.api.adapter.Adapter;
 import io.github.sinri.keel.logger.api.event.EventRecorder;
+import io.github.sinri.keel.logger.api.event.Logger;
+import io.github.sinri.keel.logger.api.event.LoggerFactory;
 import io.github.sinri.keel.logger.api.issue.IssueRecord;
 import io.github.sinri.keel.logger.api.issue.IssueRecorder;
 import io.github.sinri.keel.logger.api.record.LogRecorder;
+import io.github.sinri.keel.logger.api.writer.StdoutStringWriter;
 import io.github.sinri.keel.logger.impl.event.PlainEventRecorder;
+import io.github.sinri.keel.logger.impl.event.StringEventRender;
 import io.github.sinri.keel.logger.impl.issue.plain.PlainIssueRecorder;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class LocalLoggerFactory implements GenericLoggerFactory<String> {
+public class PlainFactory implements RecorderFactory<String>, LoggerFactory {
 
     @Override
     public LogRecorder<String> createLogRecorder(@Nonnull String topic) {
@@ -29,4 +34,9 @@ public class LocalLoggerFactory implements GenericLoggerFactory<String> {
         return new PlainIssueRecorder<>(topic, issueRecordSupplier, LogLevel.INFO);
     }
 
+    @Nonnull
+    @Override
+    public Logger createLogger(@Nonnull String topic) {
+        return new Logger(topic, LogLevel.INFO, Adapter.build(StringEventRender.getInstance(), StdoutStringWriter.getInstance()));
+    }
 }
