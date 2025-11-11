@@ -2,9 +2,9 @@ package io.github.sinri.keel.logger.impl.issue.plain;
 
 import io.github.sinri.keel.logger.api.LogLevel;
 import io.github.sinri.keel.logger.api.adapter.Adapter;
+import io.github.sinri.keel.logger.api.adapter.StdoutStringWriter;
 import io.github.sinri.keel.logger.api.issue.IssueRecord;
 import io.github.sinri.keel.logger.api.issue.IssueRecorder;
-import io.github.sinri.keel.logger.api.writer.StdoutStringWriter;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;

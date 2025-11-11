@@ -1,10 +1,10 @@
 package io.github.sinri.keel.logger.metric;
 
 import io.github.sinri.keel.logger.api.metric.MetricRecord;
+import io.github.sinri.keel.logger.api.metric.MetricRecorder;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-abstract public class AbstractMetricRecorder implements Closeable {
+abstract public class AbstractMetricRecorder implements MetricRecorder {
     private final AtomicBoolean endSwitch = new AtomicBoolean(false);
     private final Queue<MetricRecord<?>> metricRecordQueue = new ConcurrentLinkedQueue<>();
 
