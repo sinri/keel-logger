@@ -1,5 +1,6 @@
 package io.github.sinri.keel.logger.metric;
 
+import io.github.sinri.keel.base.verticles.KeelVerticleImpl;
 import io.github.sinri.keel.logger.api.metric.MetricRecord;
 import io.github.sinri.keel.logger.api.metric.MetricRecorder;
 import io.vertx.core.Future;
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static io.github.sinri.keel.facade.KeelInstance.Keel;
 
 
-abstract public class AbstractMetricRecorder implements MetricRecorder {
+abstract public class AbstractMetricRecorder extends KeelVerticleImpl implements MetricRecorder {
     private final AtomicBoolean endSwitch = new AtomicBoolean(false);
     private final Queue<MetricRecord> metricRecordQueue = new ConcurrentLinkedQueue<>();
 
@@ -38,7 +39,8 @@ abstract public class AbstractMetricRecorder implements MetricRecorder {
         return "metric";
     }
 
-    public void start() {
+    @Override
+    protected Future<Void> startVerticle() {
         Future.succeededFuture()
               .compose(v -> {
                   List<MetricRecord> buffer = new ArrayList<>();
@@ -62,6 +64,7 @@ abstract public class AbstractMetricRecorder implements MetricRecorder {
                       Keel.getVertx().setTimer(1000L, id -> start());
                   }
               });
+        return Future.succeededFuture();
     }
 
     /**
