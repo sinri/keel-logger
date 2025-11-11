@@ -2,7 +2,6 @@ package io.github.sinri.keel.logger.impl.record;
 
 import io.github.sinri.keel.logger.api.record.LogRecord;
 import io.github.sinri.keel.logger.api.record.LogRecorder;
-import io.github.sinri.keel.logger.impl.writer.QueuedLogWriter;
 
 import javax.annotation.Nonnull;
 import java.io.Closeable;
@@ -27,7 +26,7 @@ public abstract class QueuedLogRecorder implements LogRecorder, Closeable {
 
     @Override
     public final void recordLog(@Nonnull LogRecord record) {
-        this.writer().write(record);
+        this.writer().write(topic, record);
     }
 
     @Override
