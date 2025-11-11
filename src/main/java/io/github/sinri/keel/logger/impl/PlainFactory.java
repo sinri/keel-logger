@@ -18,6 +18,14 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class PlainFactory implements RecorderFactory<String>, LoggerFactory {
+    private static final PlainFactory instance = new PlainFactory();
+
+    private PlainFactory() {
+    }
+
+    public static PlainFactory getInstance() {
+        return instance;
+    }
 
     @Override
     public LogRecorder<String> createLogRecorder(@Nonnull String topic) {
