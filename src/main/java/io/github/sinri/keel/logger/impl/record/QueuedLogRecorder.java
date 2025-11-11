@@ -11,13 +11,13 @@ import java.io.IOException;
 public abstract class QueuedLogRecorder implements LogRecorder, Closeable {
     @Nonnull
     private final String topic;
-    @Nonnull
-    private final QueuedLogWriter<LogRecord> writer;
 
-    public QueuedLogRecorder(@Nonnull String topic, @Nonnull QueuedLogWriter<LogRecord> writer) {
+    public QueuedLogRecorder(@Nonnull String topic) {
         this.topic = topic;
-        this.writer = writer;
     }
+
+    @Nonnull
+    abstract protected QueuedLogWriter<LogRecord> writer();
 
     @Nonnull
     @Override
@@ -27,12 +27,12 @@ public abstract class QueuedLogRecorder implements LogRecorder, Closeable {
 
     @Override
     public final void recordLog(@Nonnull LogRecord record) {
-        this.writer.write(record);
+        this.writer().write(record);
     }
 
     @Override
     public void close() throws IOException {
-        this.writer.close();
+        this.writer().close();
     }
 
 }
