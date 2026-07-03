@@ -18,7 +18,7 @@ to the [Keel](https://github.com/sinri/keel) logging system via Java SPI — no 
 ## Requirements
 
 - Java 17+
-- [keel-logger-api](https://github.com/sinri/keel-logger-api) 5.0.1
+- [keel-logger-api](https://github.com/sinri/keel-logger-api) 5.0.3
 
 ## Installation
 
@@ -26,7 +26,7 @@ to the [Keel](https://github.com/sinri/keel) logging system via Java SPI — no 
 
 ```kotlin
 dependencies {
-    implementation("io.github.sinri:keel-logger-ext:5.0.1")
+    implementation("io.github.sinri:keel-logger-ext:5.0.3")
 }
 ```
 
@@ -34,7 +34,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'io.github.sinri:keel-logger-ext:5.0.1'
+    implementation 'io.github.sinri:keel-logger-ext:5.0.3'
 }
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 <dependency>
     <groupId>io.github.sinri</groupId>
     <artifactId>keel-logger-ext</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.3</version>
 </dependency>
 ```
 
@@ -76,8 +76,7 @@ Pass the following JVM property to see logger creation details:
 
 Full documentation is available at the [GitHub Pages site](https://sinri.github.io/keel-logger-ext/).
 
-- [Developer Guide](https://sinri.github.io/keel-logger-ext/5.0.1/developer-guide)
-- [AI Coding Guide](https://sinri.github.io/keel-logger-ext/5.0.1/ai-coding-guide)
+- [Documentation Index](https://sinri.github.io/keel-logger-ext/)
 
 ## License
 
