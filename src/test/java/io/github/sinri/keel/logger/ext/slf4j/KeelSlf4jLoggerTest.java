@@ -64,4 +64,27 @@ public class KeelSlf4jLoggerTest {
         logger.trace("trace message");
         Assertions.assertEquals(0, logs.size());
     }
+
+    @Test
+    public void testFormattedThrowableIsPreserved() {
+        List<Log> logs = new ArrayList<>();
+        LogWriterAdapter adapter = new BaseLogWriter() {
+            @Override
+            public void accept(String topic, io.github.sinri.keel.logger.api.log.SpecificLog<?> log) {
+                if (log instanceof Log) {
+                    logs.add((Log) log);
+                }
+            }
+        };
+        Supplier<LogWriterAdapter> adapterSupplier = () -> adapter;
+
+        KeelSlf4jLogger logger = new KeelSlf4jLogger(adapterSupplier, LogLevel.TRACE, "test-topic", null);
+        RuntimeException exception = new RuntimeException("boom");
+
+        logger.error("failed to process {}", "job-1", exception);
+
+        Assertions.assertEquals(1, logs.size());
+        Assertions.assertEquals("failed to process job-1", logs.get(0).message());
+        Assertions.assertSame(exception, logs.get(0).exception());
+    }
 }
