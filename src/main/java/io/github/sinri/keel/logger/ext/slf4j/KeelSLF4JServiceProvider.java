@@ -44,7 +44,7 @@ public class KeelSLF4JServiceProvider implements SLF4JServiceProvider {
      * <p>
      * 更新 SLF4J 依赖版本（gradle.properties 中的 {@code slf4jApiVersion}）时应同步更新此常量。
      */
-    public static final String REQUESTED_API_VERSION = "2.0.17";
+    public static final String REQUESTED_API_VERSION = "2.0.18";
 
     /**
      * Keel 日志记录器工厂实例。
